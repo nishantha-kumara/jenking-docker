@@ -1,0 +1,33 @@
+version: "3"
+services:
+  php:
+    build:
+      context: "./php/"
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+    networks:
+      - backend
+    volumes:
+      - ${PROJECT_ROOT}/:/var/www/html/
+    container_name: php${PHP_VERSION}
+
+  jenkins:
+    build:
+      context: "./jenkins/"
+    depends_on: 
+      - php
+    ports:
+      - "50000:50000"
+      - "8080:8080"
+    volumes:
+      - /var/jenkins_home
+    networks:
+      - jenkins
+      - backend
+    container_name: jenkings-php
+
+networks:
+  backend:
+  jenkins:
+volumes:
+  data:
