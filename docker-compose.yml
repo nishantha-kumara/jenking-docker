@@ -1,28 +1,14 @@
 version: "3"
 services:
-
   jenkins:
     build:
       context: "./jenkins/"
     ports:
       - "50000:50000"
       - "8080:8080"
-    depends_on:
-      - sonar
     volumes:
       - jenkins:/var/jenkins_home jenkins
     container_name: "jenkins"
 
-  sonar:
-    build: 
-      context: "./sonar/"
-    ports: 
-      - "9000:9000"
-    volumes: 
-      - sonar:/opt/sonarqube/data
-    container_name: "sonar-qube"
-  
-
 volumes:
   jenkins:
-  sonar:
