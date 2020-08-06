@@ -1,33 +1,28 @@
 version: "3"
 services:
-  php:
-    build:
-      context: "./php/"
-      args:
-        PHP_VERSION: ${PHP_VERSION}
-    networks:
-      - backend
-    volumes:
-      - ${PROJECT_ROOT}/:/var/www/html/
-    container_name: php${PHP_VERSION}
 
   jenkins:
     build:
       context: "./jenkins/"
-    depends_on: 
-      - php
     ports:
       - "50000:50000"
       - "8080:8080"
+    depends_on:
+      - sonar
     volumes:
-      - /var/jenkins_home
-    networks:
-      - jenkins
-      - backend
-    container_name: jenkings-php
+      - jenkins:/var/jenkins_home jenkins
+    container_name: "jenkins"
 
-networks:
-  backend:
-  jenkins:
+  sonar:
+    build: 
+      context: "./sonar/"
+    ports: 
+      - "9000:9000"
+    volumes: 
+      - sonar:/opt/sonarqube/data
+    container_name: "sonar-qube"
+  
+
 volumes:
-  data:
+  jenkins:
+  sonar:
